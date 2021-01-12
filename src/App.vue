@@ -14,3 +14,13 @@ export default {
   }
 }
 </script>
+
+<style>
+  body {    
+    font-family: 'Courier New', Courier, monospace;
+  }
+  h1 {
+    margin: 0px;
+    padding: 0px;
+  }
+</style>
