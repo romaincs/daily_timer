@@ -22,10 +22,17 @@ async function createWindow() {
     }
   })
 
+  //Auto hide menu bar (press alt to display menu)
+  win.menuBarVisible = false
+  win.setAutoHideMenuBar(true)
+
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode
     await win.loadURL(process.env.WEBPACK_DEV_SERVER_URL)
-    if (!process.env.IS_TEST) win.webContents.openDevTools()
+
+    // Un comment this line to show dev tools automatically
+    //if (!process.env.IS_TEST) win.webContents.openDevTools()
+
   } else {
     createProtocol('app')
     // Load the index.html when not in development
