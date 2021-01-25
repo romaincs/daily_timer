@@ -3,7 +3,7 @@
     <div class="title">
       <h1>Timer</h1>
     </div>
-    <div class="container">
+    <form class="container">
       <div class="countdown">
         <div>
           <span :class="{'timeout': countDown == 0}">{{minutes}}:{{seconds}}</span>
@@ -15,18 +15,24 @@
       </div>
       <div class="config">
         <h3>Default</h3>
-        <div v-for="configValue in configValues" :key="configValue">
+        <div>
+          <div v-for="configValue in configValues" :key="configValue">
+            <input type="radio" name="config" :id="'config-' + configValue" @click="setStartCountDownValue(configValue)" :checked="isConfigValueChecked(configValue)">
+            <label :for="'config-' + configValue">
+              <span>{{(configValue / 60)}} min</span>
+            </label>
+          </div> 
           <div>
-            <input type="radio" name="config" :id="'config-' + configValue" :value="configValue" @click="setConfigValue(configValue)" :checked="isConfigChecked(configValue)">
-            <label :for="'config-' + configValue">{{configValue != 'Custom' ? configValue / 60 : configValue}} min</label>
-          </div>
-          <div v-if="configValue == 'Custom'">
+            <input type="radio" name="config" id="config-custom" @click="setStartCountDownValue('Custom')" :checked="isConfigValueChecked('Custom')">
+            <label for="config-custom">
+              <span>Custom</span>
+            </label>
             <br />
-            <input type="number" name="custom-value" id="custom-value" :disabled="isCustomConfigValueDisabled">
-          </div>
+            <input type="number" name="config-custom-value" id="config-custom-value" v-model="customConfigValue" :disabled="!this.isConfigValueChecked('Custom')">
+          </div>         
         </div>
       </div>
-    </div>
+    </form>
 
   </div>
 </template>
@@ -46,9 +52,10 @@
 
     data() {
       return {
-        countDown: global.DEFAULT_CT_VALUE,
-        configValues: [120, 300, 600, 'Custom'],
-        selectedConfigValue: global.DEFAULT_CT_VALUE / 60,
+        countDown: null,
+        startCountDownValue: null,
+        configValues: global.CONFIG_VALUES,
+        customConfigValue: null,
         running: false,
         intervalId: 0
       }
@@ -72,10 +79,23 @@
         } else {
           return 'Stop'
         }
+      }
+    },
+
+
+    watch: {
+      customConfigValue: function(value) {
+        this.setStartCountDownValue(value)
       },
 
-      isCustomConfigValueDisabled() {
-        return this.configValues.includes(this.countDown)
+      startCountDownValue: function(value) {
+        if(!this.running) {
+          if(this.isConfigValueChecked('Custom')) {
+            this.countDown = this.customConfigValue
+          } else {
+            this.countDown = value
+          }
+        }
       }
     },
 
@@ -84,7 +104,6 @@
       startStop() {
         let that = this
         if (!this.running) {
-          this.countDown = this.selectedConfigValue
           this.running = true
           this.intervalId = setInterval(() => {
             if (that.countDown > 0) {
@@ -104,27 +123,27 @@
       reset() {
         clearInterval(this.intervalId)
         this.running = false
-        this.countDown = global.DEFAULT_CT_VALUE
+        this.countDown = this.startCountDownValue
       },
 
-      setConfigValue(selectedConfig) {
-        if(selectedConfig != 'Custom') {
-          this.selectedConfigValue = selectedConfig
-        }
-        else {
-          this.selectedConfigValue = this.customConfigValue
-        }
+      setStartCountDownValue(selectedConfig) {        
+        this.startCountDownValue = (selectedConfig != 'Custom') ? selectedConfig : this.customConfigValue
       },
 
-      isConfigChecked(configValue) {
-        if(!this.configValues.includes(this.selectedConfigValue) && configValue == 'Custom') {
-          return true
-        } 
-        if(this.configValues.includes(this.selectedConfigValue) && configValue == this.selectedConfigValue) {
-          return true
+      isConfigValueChecked(configValue) {
+        if(configValue == 'Custom') {
+          return this.startCountDownValue == this.customConfigValue
+        } else {
+          return this.startCountDownValue == configValue
         }
-        return false
       }
+    },
+
+    mounted: function() {
+      this.startCountDownValue = global.DEFAULT_CT_VALUE
+      if(!this.configValues.includes(global.DEFAULT_CT_VALUE)) {
+        this.customConfigValue = global.DEFAULT_CT_VALUE
+      } 
     }
   }
 </script>
