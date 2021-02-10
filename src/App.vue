@@ -18,6 +18,8 @@ export default {
 <style>
   body {    
     font-family: 'Courier New', Courier, monospace;
+    background-color:#252423;
+    color:rgba(255,255,255, 0.95);
   }
   h1 {
     margin: 0px;

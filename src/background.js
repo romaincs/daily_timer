@@ -13,8 +13,8 @@ protocol.registerSchemesAsPrivileged([
 async function createWindow() {
   // Create the browser window.
   const win = new BrowserWindow({
-    width: 250,
-    height: 200,
+    width: 400,
+    height: 250,
     webPreferences: {
       // Use pluginOptions.nodeIntegration, leave this alone
       // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
@@ -25,6 +25,8 @@ async function createWindow() {
   //Auto hide menu bar (press alt to display menu)
   win.menuBarVisible = false
   win.setAutoHideMenuBar(true)
+
+  win.setAlwaysOnTop(true)
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode

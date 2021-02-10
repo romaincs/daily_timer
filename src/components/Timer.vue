@@ -15,7 +15,7 @@
       </div>
       <div class="separator"><div>&nbsp;</div></div>
       <div class="config">
-        <h3>Default</h3>
+        <h3>Config</h3>
         <div>
           <div v-for="configValue in configValues" :key="configValue">
             <input type="radio" name="config" :id="'config-' + configValue" @click="setStartCountDownValue(configValue)" :checked="isConfigValueChecked(configValue)">
@@ -150,6 +150,11 @@
 </script>
 
 <style>
+  .title {
+    text-align: center; 
+    margin-bottom: 10px;
+  }
+
   h3 {
     margin:0px;
   }
@@ -167,13 +172,28 @@
     justify-content: space-between;
     
   }
+
   .countdown {
-    font-size: 46px;
-    flex-basis: 45%;
+    font-size: 52px;
+    flex-basis: 65%;
+    margin:auto;
+  }
+
+  .countdown div{
+    text-align: center;
   }
 
   .buttons input {
-    width: 65px;
+    width: 75px;
+    background-color: rgb(0, 91, 161);
+    color:white;
+    border:none;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+
+  .buttons input:focus {
+    outline: none;
   }
 
   .buttons input:first-child {
@@ -199,12 +219,17 @@
   }
 
   .config {
-    flex-basis: 45%;
+    flex-basis: 35%;
+    font-size:14px;
   }
 
   .config > div {
-    text-align: left;
-    
+    text-align: left;    
+  }
+
+  .config #config-custom-value {
+    width: 40px;
+    margin-left: 20px;
   }
 
   #custom-value {
