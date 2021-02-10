@@ -13,6 +13,7 @@
           <input type="button" @click="reset()" value="Reset" />
         </div>
       </div>
+      <div class="separator"><div>&nbsp;</div></div>
       <div class="config">
         <h3>Default</h3>
         <div>
@@ -149,8 +150,26 @@
 </script>
 
 <style>
+  h3 {
+    margin:0px;
+  }
+
+  .timer {
+    display: flex;
+    flex-direction: column;
+    max-width:400px;
+    margin:auto;
+  }
+
+  .container {
+    display:flex;
+    align-items: stretch;
+    justify-content: space-between;
+    
+  }
   .countdown {
     font-size: 46px;
+    flex-basis: 45%;
   }
 
   .buttons input {
@@ -161,15 +180,31 @@
     margin-right: 10px;
   }
 
-  .timer {
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-  }
+  
 
   .timeout {
     color: red;
     animation: blinker 1s step-start infinite;
+  }
+
+  .separator {
+    flex-basis: 10%;
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+  }
+
+  .separator > div {
+    border-left:2px solid #dedede;
+  }
+
+  .config {
+    flex-basis: 45%;
+  }
+
+  .config > div {
+    text-align: left;
+    
   }
 
   #custom-value {
